@@ -33,7 +33,7 @@ function dailyPlay()
 	echo $gainAmount
 }
 
-function profitOfParticularDays()
+function luckiestAndUnluckiestDay()
 {
         local day=1
         while [ $day -lt $DAYS ]
@@ -58,7 +58,7 @@ function profitOfParticularDays()
         done | sort -n -k3 | head  -1
 
 }
-profitOfParticularDays
+luckiestAndUnluckiestDay
 
 
 
