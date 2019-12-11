@@ -12,6 +12,7 @@ DAYS=20
 cash=$STAKE_PER_DAY
 gainAmount=0
 totalProfit=0
+stopGambling="false"
 
 declare -A dayProfit
 declare -A sunAmount
@@ -33,7 +34,7 @@ function dailyPlay()
 	echo $gainAmount
 }
 
-function profitOfParticularDays()
+function profitForPerticularDay()
 {
         local day=1
         while [ $day -lt $DAYS ]
@@ -45,20 +46,41 @@ function profitOfParticularDays()
                 totalProfit=$(($totalProfit+$profitOfTheDay))
 		sumAmount[$day]=$totalProfit
 	done
-	echo "for luckiest day"
-        for d in "${!sumAmount[@]}"
-        do
-                echo $d : ${sumAmount[$d]}
-        done | sort -rn -k3 | head  -1
-
-        echo "for unluckiest day"
-        for d in "${!sumAmount[@]}"
-        do
-                echo $d : ${sumAmount[$d]}
-        done | sort -n -k3 | head  -1
+	echo $totalProfit
 
 }
-profitOfParticularDays
+profitForPerticularDay
 
+function luckiestAndUnluckiestDay()
+{
+	echo "for luckiest day"
+	for d in "${!sumAmount[@]}"
+	do
+		echo $d : ${sumAmount[$d]}
+	done | sort -rn -k3 | head  -1
 
+	echo "for unluckiest day"
+	for d in "${!sumAmount[@]}"
+	do
+		echo $d : ${sumAmount[$d]}
+	done | sort -n -k3 | head  -1
+}
 
+function stopGamblingOrNot()
+{
+	while [ $stopGambling == "false" ]
+        do
+		if [ $totalProfit -gt 0 ]
+		then
+			profit=$(profitForPerticularDay)
+			echo $profit
+        	fi
+		if [ $totalProfit -le 0 ]
+		then
+			stopGambling="true"
+                	echo "last month profit was nothing hence stoped gambling"
+			break
+		fi
+	done
+}
+stopGamblingOrNot
