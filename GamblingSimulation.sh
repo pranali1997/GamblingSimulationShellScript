@@ -45,11 +45,17 @@ function profitOfParticularDays()
                 totalProfit=$(($totalProfit+$profitOfTheDay))
 		sumAmount[$day]=$totalProfit
 	done
-        echo "total profit :"$totalProfit
-	for k in  "${!dayProfit[@]}"
-	do
-                echo $k : ${dayProfit[$k]} 
-	done  | sort  -n -k1
+	echo "for luckiest day"
+        for d in "${!sumAmount[@]}"
+        do
+                echo $d : ${sumAmount[$d]}
+        done | sort -rn -k3 | head  -1
+
+        echo "for unluckiest day"
+        for d in "${!sumAmount[@]}"
+        do
+                echo $d : ${sumAmount[$d]}
+        done | sort -n -k3 | head  -1
 
 }
 profitOfParticularDays
