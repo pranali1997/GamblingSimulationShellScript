@@ -2,6 +2,7 @@
 
 echo "WELCOME TO GAMBLING SIMULATION"
 
+#constants
 STAKE_PER_DAY=100
 BET=1
 MAX_STAKE=$(($STAKE_PER_DAY+(50*$STAKE_PER_DAY/100)))
@@ -15,7 +16,7 @@ totalProfit=0
 stopGambling="false"
 
 declare -A dayProfit
-declare -A sunAmount
+declare -A sumAmount
 
 function dailyPlay()
 {
@@ -41,10 +42,10 @@ function profitForPerticularDay()
         do
                 local profitOfTheDay=0
                 profitOfTheDay=$(dailyPlay)
-                dayProfit[$day]=$profitOfTheDay
+                dayProfit["Day$day"]=$profitOfTheDay
                 day=$(($day+1))
                 totalProfit=$(($totalProfit+$profitOfTheDay))
-		sumAmount[$day]=$totalProfit
+		sumAmount["Day$day"]=$totalProfit
 	done
 	echo $totalProfit
 
@@ -74,6 +75,7 @@ function stopGamblingOrNot()
 		then
 			profit=$(profitForPerticularDay)
 			echo $profit
+			stopGamblingOrNot
         	fi
 		if [ $totalProfit -le 0 ]
 		then
