@@ -12,6 +12,10 @@ DAYS=20
 cash=$STAKE_PER_DAY
 gainAmount=0
 totalProfit=0
+
+declare -A dayProfit
+declare -A sunAmount
+
 function dailyPlay()
 {
 	while [ $cash -gt $MIN_STAKE ] && [ $cash -lt $MAX_STAKE ]
@@ -36,11 +40,17 @@ function profitOfParticularDays()
         do
                 local profitOfTheDay=0
                 profitOfTheDay=$(dailyPlay)
-                dayProfit[$day]=$gainAmount
+                dayProfit[$day]=$profitOfTheDay
                 day=$(($day+1))
                 totalProfit=$(($totalProfit+$profitOfTheDay))
-        done
+		sumAmount[$day]=$totalProfit
+	done
         echo "total profit :"$totalProfit
+	for k in  "${!dayProfit[@]}"
+	do
+                echo $k : ${dayProfit[$k]} 
+	done  | sort  -n -k1
+
 }
 profitOfParticularDays
 
