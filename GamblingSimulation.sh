@@ -79,8 +79,8 @@ function stopGamblingOrNot()
 
 function main()
 {
-profitForPerticularDay
-stopGamblingOrNot
-luckiestAndUnluckiestDay
+	profitForPerticularDay
+	stopGamblingOrNot
+	luckiestAndUnluckiestDay
 }
 main
