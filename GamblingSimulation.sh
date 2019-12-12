@@ -35,6 +35,7 @@ function dailyPlay()
 	echo $gainAmount
 }
 
+
 function profitForPerticularDay()
 {
         local day=1
@@ -47,10 +48,8 @@ function profitForPerticularDay()
                 totalProfit=$(($totalProfit+$profitOfTheDay))
 		sumAmount["Day$day"]=$totalProfit
 	done
-	echo $totalProfit
-
+	echo 	stopGamblingOrNot $totalProfit
 }
-profitForPerticularDay
 
 function luckiestAndUnluckiestDay()
 {
@@ -66,23 +65,16 @@ function luckiestAndUnluckiestDay()
 		echo $d : ${sumAmount[$d]}
 	done | sort -n -k3 | head  -1
 }
+profitForPerticularDay
 
 function stopGamblingOrNot()
 {
-	while [ $stopGambling == "false" ]
-        do
+			echo $profit
 		if [ $totalProfit -gt 0 ]
 		then
-			profit=$(profitForPerticularDay)
-			echo $profit
+			profitForPerticularDay
 			stopGamblingOrNot
-        	fi
-		if [ $totalProfit -le 0 ]
-		then
-			stopGambling="true"
-                	echo "last month profit was nothing hence stoped gambling"
-			break
 		fi
-	done
+
 }
 stopGamblingOrNot
