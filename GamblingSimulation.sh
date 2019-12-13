@@ -10,7 +10,6 @@ MIN_STAKE=$(($STAKE_PER_DAY-(50*$STAKE_PER_DAY/100)))
 DAYS=20
 
 #variables
-cash=$STAKE_PER_DAY
 gainAmount=0
 totalProfit=0
 stopGambling="false"
@@ -20,6 +19,7 @@ declare -A sumAmount
 
 function dailyPlay()
 {
+	cash=$STAKE_PER_DAY
 	while [ $cash -gt $MIN_STAKE ] && [ $cash -lt $MAX_STAKE ]
 	do
 		random=$((RANDOM%2))
