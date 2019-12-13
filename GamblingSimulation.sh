@@ -11,19 +11,16 @@ DAYS=20
 
 #variables
 gainAmount=0
-totalProfit=0
-stopGambling="false"
 
 declare -A dayProfit
 declare -A sumAmount
 
-function dailyPlay()
+function getDailyPlay()
 {
 	cash=$STAKE_PER_DAY
 	while [ $cash -gt $MIN_STAKE ] && [ $cash -lt $MAX_STAKE ]
 	do
-		random=$((RANDOM%2))
-		if [ $random == 1 ]
+		if [ $((RANDOM%2)) == 1 ]
 		then
 			cash=$(($cash+$BET))
 		else
@@ -36,51 +33,58 @@ function dailyPlay()
 }
 
 
-function profitForPerticularDay()
+function getProfitForPerticularDay()
 {
         local day=1
+	totalProfit=0
         while [ $day -lt $DAYS ]
         do
                 local profitOfTheDay=0
-                profitOfTheDay=$(dailyPlay)
+                profitOfTheDay=$(getDailyPlay)
                 dayProfit["Day$day"]=$profitOfTheDay
                 day=$(($day+1))
                 totalProfit=$(($totalProfit+$profitOfTheDay))
 		sumAmount["Day$day"]=$totalProfit
 	done
-	echo 	stopGamblingOrNot $totalProfit
+	echo 	 $totalProfit
 }
 
-function luckiestAndUnluckiestDay()
+function getUnluckiestDay()
 {
-	echo "for luckiest day"
-	for d in "${!sumAmount[@]}"
-	do
-		echo $d : ${sumAmount[$d]}
-	done | sort -rn -k3 | head  -1
 
-	echo "for unluckiest day"
 	for d in "${!sumAmount[@]}"
 	do
-		echo $d : ${sumAmount[$d]}
-	done | sort -n -k3 | head  -1
+		echo "day$d" ${sumAmount[$d]}
+	done | sort -k3 -nr | head -1
+
 }
 
-function stopGamblingOrNot()
+function getLuckiestDay()
 {
-			echo $profit
+
+	for d in "${!sumAmount[@]}"
+	do
+		echo "day$d" ${sumAmount[$d]}
+	done | sort -k3 -nr | tail -1
+
+}
+
+function getStopGamblingOrNot()
+{
+		echo $profit
 		if [ $totalProfit -gt 0 ]
 		then
-			profitForPerticularDay
-			stopGamblingOrNot
+			getProfitForPerticularDay
+			getStopGamblingOrNot
 		fi
 
 }
 
 function main()
 {
-	profitForPerticularDay
-	stopGamblingOrNot
-	luckiestAndUnluckiestDay
+	getProfitForPerticularDay
+	getStopGamblingOrNot
+	getUnluckiestDay
+	getLuckiestDay
 }
 main
