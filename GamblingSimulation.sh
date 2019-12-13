@@ -31,7 +31,7 @@ function dailyPlay()
 		fi
 	done
 
-	gainAmount=$(($cash-100))
+	gainAmount=$(($cash-$STAKE_PER_DAY))
 	echo $gainAmount
 }
 
@@ -65,7 +65,6 @@ function luckiestAndUnluckiestDay()
 		echo $d : ${sumAmount[$d]}
 	done | sort -n -k3 | head  -1
 }
-profitForPerticularDay
 
 function stopGamblingOrNot()
 {
@@ -77,4 +76,11 @@ function stopGamblingOrNot()
 		fi
 
 }
-stopGamblingOrNot
+
+function main()
+{
+	profitForPerticularDay
+	stopGamblingOrNot
+	luckiestAndUnluckiestDay
+}
+main
